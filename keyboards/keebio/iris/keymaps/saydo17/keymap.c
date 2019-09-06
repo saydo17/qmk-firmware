@@ -2,10 +2,11 @@
 
 extern keymap_config_t keymap_config;
 
-#define CTLDOT LCTRL(KC_DOT)
+#define CTLDOT LCTL(KC_DOT)
+
 
 enum custom_keycodes {
-  ARW,
+  ARW = SAFE_RANGE,
   PEQL,
   MEQL,
 };
@@ -20,7 +21,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LALT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_LGUI,          KC_END,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_EQ,
+     KC_LALT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_LGUI,          KC_DEL,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_EQL,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     KC_ENT,  KC_SPC,   KC_LSFT,                    MO(1),  KC_LBRC,   KC_RBRC
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -32,7 +33,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      BL_INC,   KC_NO,   KC_HOME,  KC_UP,  KC_END,  KC_PGUP,                            KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_F12,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     BL_DEC,   KC_NO,   KC_LEFT, KC_DOWN, KC_UP,   KC_PGDN,                            KC_UNDS, KC_NO,   KC_NO,   KC_NO,   MEQL,    KC_NO,
+     BL_DEC,   KC_NO,   KC_LEFT, KC_DOWN, KC_RIGHT,KC_PGDN,                            KC_UNDS, KC_NO,   KC_NO,   KC_NO,   MEQL,    KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      MO(2),    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_TRNS,          KC_NO,   KC_MINS, KC_NO,   KC_NO,   CTLDOT,  PEQL,    ARW,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
@@ -57,20 +58,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case ARW:
+      case ARW:
          if (record->event.pressed) {
-         SEND_STRING("=>");
+            SEND_STRING("=>");
+            return false;
          }
          break;
       case PEQL:
          if(record->event.pressed){
             SEND_STRING("+=");
+            return false;
          }
          break;
       case MEQL:
-         if(record->ev.pressed){
+         if(record->event.pressed){
             SEND_STRING("-=");
+            return false;
          }
+         break;
   }
   return true;
 }
