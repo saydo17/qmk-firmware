@@ -22,6 +22,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define USE_SERIAL
 
 #define MASTER_LEFT
+//Fix for my reversed columns on elite c
+#undef MATRIX_COL_PINS
+#define MATRIX_COL_PINS { B5, B4, E6, D7, C6, D4 }
 // #define MASTER_RIGHT
 //#define EE_HANDS
 // Rows are doubled-up
